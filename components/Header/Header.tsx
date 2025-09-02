@@ -1,7 +1,13 @@
+import { fetchNotes } from '@/lib/api';
 import Link from "next/link";
 import css from "./Header.module.css";
+import TagsMenu from '../TagsMenu/TagsMenu';
 
-const Header = () => {
+// const tags = ['Work', 'Personal', 'Study'];
+
+const Header = async () => {
+  const notesData = await fetchNotes();
+  const tags = Array.from(new Set(notesData.notes.map(note => note.tag)));
   return (
     <header className={css.header}>
   <Link href="/" aria-label="Home">
@@ -13,7 +19,7 @@ const Header = () => {
         <Link href="/">Home</Link>
       </li>
       <li>
-        <Link href="/notes">Notes</Link>
+        <TagsMenu tags={tags} />
       </li>
     </ul>
   </nav>
@@ -23,3 +29,5 @@ const Header = () => {
 }
 
 export default Header
+
+

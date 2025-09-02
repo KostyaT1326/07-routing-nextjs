@@ -1,17 +1,20 @@
 'use client';
 
 import React, { useState } from 'react';
+import NoteList from '@/components/NoteList/NoteList';
+import Pagination from '@/components/Pagination/Pagination';
 import css from './NotesClient.module.css';
-import SearchBox from '../../components/SearchBox/SearchBox';
-import Pagination from '../../components/Pagination/Pagination';
-import NoteList from '../../components/NoteList/NoteList';
-import Modal from '../../components/Modal/Modal';
-import NoteForm from '../../components/NoteForm/NoteForm';
+import SearchBox from '@/components/SearchBox/SearchBox';
+import Modal from '@/components/Modal/Modal';
+import NoteForm from '@/components/NoteForm/NoteForm';
 import { keepPreviousData, useQuery } from '@tanstack/react-query';
-import { fetchNotes } from '../../lib/api';
+import { fetchNotes } from '@/lib/api';
 
+  type Props = {
+    tag?: string;
+  };
 
-const NotesClient = () => {
+  const NotesClient = ({ tag }: Props) => {
     const [page, setPage] = useState(1);
     const [query, setQuery] = useState('');
     const [searchInput, setSearchInput] = useState('');
@@ -26,10 +29,10 @@ const NotesClient = () => {
     }, [searchInput]);
 
     const { data } = useQuery({
-        queryKey: ["notes", page, query],
-        queryFn: () => fetchNotes({page, search: query}),
-        placeholderData: keepPreviousData,
-        refetchOnMount: false,
+      queryKey: ['notes', page, query, tag],
+      queryFn: () => fetchNotes({ page, search: query, tag }),
+      placeholderData: keepPreviousData,
+      refetchOnMount: false,
     });
 
     const pageCount = data?.totalPages || 0;
@@ -49,14 +52,17 @@ const NotesClient = () => {
             Create note +
           </button>
         </header>
-        {data && Array.isArray(data.notes) && data.notes.length > 0 && (
+        {/* {tag && <h2>Notes with tag: {tag}</h2>} */}
+        {data && Array.isArray(data.notes) && data.notes.length > 0 ? (
           <NoteList notes={data.notes} />
+        ) : (
+          <p>No notes found.</p>
         )}
         <Modal isOpen={modalIsOpen} onClose={() => setModalIsOpen(false)}>
           <NoteForm onCancel={() => setModalIsOpen(false)} />
         </Modal>
       </div>
     );
-};
+  };
 
-export default NotesClient;
+  export default NotesClient;

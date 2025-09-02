@@ -9,9 +9,10 @@ const axiosInstance = axios.create({
 });
 
 export interface FetchNotesParams {
-    page?: number;
-    perPage?: number;
-    search?: string;
+  page?: number;
+  perPage?: number;
+  search?: string;
+  tag?: string;
 }
 
 export interface FetchNotesResponse {
@@ -20,9 +21,11 @@ export interface FetchNotesResponse {
 }
 
 export async function fetchNotes(params: FetchNotesParams = {}): Promise<FetchNotesResponse> {
-    const { page = 1, perPage = 12, search = '' } = params;
-    const response = await axiosInstance.get<FetchNotesResponse>('/notes', { params: { page, perPage, search } });
-    return response.data;
+  const { page = 1, perPage = 12, search = '', tag } = params;
+  const queryParams: FetchNotesParams = { page, perPage, search };
+  if (tag) queryParams.tag = tag;
+  const response = await axiosInstance.get<FetchNotesResponse>('/notes', { params: queryParams });
+  return response.data;
 }
 
 export interface CreateNoteParams {
@@ -40,8 +43,19 @@ export async function deleteNote(id: string): Promise<Note> {
 const response = await axiosInstance.delete<Note>(`/notes/${id}`);
     return response.data;
 }
-
+  
 export const getSingleNote = async (id: string) => {
   const res = await axiosInstance.get<Note>(`/notes/${id}`);
   return res.data;
-};
+}
+
+export const getNotes = async (tag?: string) => {
+  const params = tag ? { tag } : {};
+  const res = await axiosInstance.get<FetchNotesResponse>('/notes', { params });
+  return res.data;
+}
+
+  export const getTags = async () => {
+    const res = await axiosInstance.get<string[]>('/tags');
+    return res.data;
+}
