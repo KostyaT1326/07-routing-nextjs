@@ -1,3 +1,5 @@
+export const dynamic = "force-dynamic";
+
 'use client';
 
 import { useEffect } from 'react';
@@ -9,7 +11,7 @@ const NotFound = () => {
 
   useEffect(() => {
     // Редірект через 3 секунди
-    const timer = setTimeout(() => router.push('/'), 3000);
+    const timer = setTimeout(() => router.push('/'), 4000);
     return () => clearTimeout(timer);
   }, [router]);
 
