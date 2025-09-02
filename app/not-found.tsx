@@ -1,19 +1,8 @@
-export const dynamic = "force-dynamic";
-
 'use client';
 
-import { useEffect } from 'react';
-import { useRouter } from 'next/navigation';
 import css from './notFound.module.css';
 
 const NotFound = () => {
-  const router = useRouter();
-
-  useEffect(() => {
-    // Редірект через 3 секунди
-    const timer = setTimeout(() => router.push('/'), 4000);
-    return () => clearTimeout(timer);
-  }, [router]);
 
   return (
     <div className={css.container}>
