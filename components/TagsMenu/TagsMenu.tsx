@@ -36,7 +36,7 @@ const TagsMenu = ({ tags }: Props) => {
       {isOpen && (
         <ul className={css.menuList}>
           <li className={css.menuItem}>
-            <Link href="/notes/filter/all" className={css.menuLink}>All notes</Link>
+            <Link href="/notes/filter/All" className={css.menuLink}>All</Link>
           </li>
           {tags.map(tag => (
             <li key={tag} className={css.menuItem}>

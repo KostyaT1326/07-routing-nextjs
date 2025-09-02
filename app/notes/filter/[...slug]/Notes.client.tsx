@@ -9,9 +9,10 @@ import Modal from '@/components/Modal/Modal';
 import NoteForm from '@/components/NoteForm/NoteForm';
 import { keepPreviousData, useQuery } from '@tanstack/react-query';
 import { fetchNotes } from '@/lib/api';
+import { NoteTag } from '@/types/note';
 
   type Props = {
-    tag?: string;
+    tag?: NoteTag;
   };
 
   const NotesClient = ({ tag }: Props) => {

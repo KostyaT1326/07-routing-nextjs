@@ -2,18 +2,21 @@
 
 import Modal from "@/components/Modal/Modal";
 import css from "./NotePreview.module.css";
-import { useRouter, useParams } from "next/navigation";
+import { useRouter } from "next/navigation";
 import { useQuery } from "@tanstack/react-query";
 import { getSingleNote } from "@/lib/api";
 
-const NotePreview = () => {
+type Props = {
+  noteId: string;
+};
+
+const NotePreview = ({ noteId }: Props) => {
   const router = useRouter();
-  const { id } = useParams<{ id: string }>();
   const handleClose = () => router.back();
 
   const { data: note, isLoading, error } = useQuery({
-    queryKey: ["note", id],
-    queryFn: () => getSingleNote(id),
+    queryKey: ["note", noteId],
+    queryFn: () => getSingleNote(noteId),
     refetchOnMount: false,
   });
 
