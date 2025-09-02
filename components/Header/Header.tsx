@@ -1,13 +1,10 @@
-import { fetchNotes } from '@/lib/api';
 import Link from "next/link";
 import css from "./Header.module.css";
 import TagsMenu from '../TagsMenu/TagsMenu';
 
-// const tags = ['Work', 'Personal', 'Study'];
+const tags = ['Work', 'Personal', 'Study', 'Meeting', 'Shopping', 'Todo'];
 
-const Header = async () => {
-  const notesData = await fetchNotes();
-  const tags = Array.from(new Set(notesData.notes.map(note => note.tag)));
+const Header = () => {
   return (
     <header className={css.header}>
   <Link href="/" aria-label="Home">
