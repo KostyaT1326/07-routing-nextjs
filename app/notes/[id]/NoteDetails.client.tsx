@@ -8,7 +8,6 @@ import css from "./NoteDetails.module.css";
 
 const NoteDetailsClient = () => {
   const { id } = useParams<{ id: string }>();
-  console.log("id:", id);
 
   const { data: note, isLoading, error } = useQuery({
     queryKey: ["note", id],
