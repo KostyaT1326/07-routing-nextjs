@@ -27,6 +27,7 @@ const TagsMenu = ({ tags }: Props) => {
   }, [isOpen]);
 
   const toggleMenu = () => setIsOpen(!isOpen);
+  const closeMenu = () => setIsOpen(false);
 
   return (
     <div className={css.menuContainer} ref={menuRef}>
@@ -36,11 +37,11 @@ const TagsMenu = ({ tags }: Props) => {
       {isOpen && (
         <ul className={css.menuList}>
           <li className={css.menuItem}>
-            <Link href="/notes/filter/All" className={css.menuLink}>All</Link>
+            <Link href="/notes/filter/All" className={css.menuLink} onClick={closeMenu}>All</Link>
           </li>
           {tags.map(tag => (
             <li key={tag} className={css.menuItem}>
-              <Link href={`/notes/filter/${tag}`} className={css.menuLink}>{tag}</Link>
+              <Link href={`/notes/filter/${tag}`} className={css.menuLink} onClick={closeMenu}>{tag}</Link>
             </li>
           ))}
         </ul>
