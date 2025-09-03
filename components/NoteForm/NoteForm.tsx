@@ -7,12 +7,19 @@ import type { FormikHelpers } from 'formik';
 import * as Yup from 'yup';
 import css from './NoteForm.module.css';
 import { createNote } from '@/lib/api';
+import { NoteTag } from '@/types/note';
 
 interface NoteFormProps {
   onCancel: () => void;
 }
 
-const tagOptions = ["Todo", "Work", "Personal", "Meeting", "Shopping"];
+interface FormValues {
+  title: string;
+  content: string;
+  tag: NoteTag | '';
+}
+
+const tagOptions: NoteTag[] = ["Todo", "Work", "Personal", "Meeting", "Shopping"];
 
 const validationSchema = Yup.object({
   title: Yup.string().min(3, 'Min 3 symbols').max(50, 'Max 50 symbols').required('Required'),
@@ -36,15 +43,21 @@ const NoteForm: React.FC<NoteFormProps> = ({ onCancel }) => {
   });
 
   return (
-    <Formik
+    <Formik<FormValues>
       initialValues={{ title: '', content: '', tag: '' }}
       validationSchema={validationSchema}
       onSubmit={(
-        values: { title: string; content: string; tag: string },
-        { resetForm }: FormikHelpers<{ title: string; content: string; tag: string }>
+        values: FormValues,
+        { resetForm }: FormikHelpers<FormValues>
       ) => {
         resetFormRef.current = resetForm;
-        mutation.mutate(values);
+        if (values.tag !== '') {
+          mutation.mutate({
+            title: values.title,
+            content: values.content,
+            tag: values.tag
+          });
+        }
       }}
     >
       {({ isSubmitting, isValid }: { isSubmitting: boolean; isValid: boolean }) => (
